@@ -58,7 +58,7 @@
         <div class="input-group input-group-outline mb-3">
             {{form.username.label(class='form-label')}}
             {% if form.username.errors%} 
-            {{ form.username(class='form-control form-control-lg is-invalid')}} 
+            {{ form.username(class='form-control form-control-lg is-invalid', value=defaultpass)}} 
             <div class="invalid-feedback">
             {% for error in form.username.errors %} 
             <span>{{error}}</span>

@@ -34,7 +34,13 @@
     {% if messages %}
         {% for category , message in messages %}
 
-            <div class="alert alert-{{category}} text-center">{{message}}</div>
+        <div class="alert mt-1 mx-2 text-center alert-warning alert-dismissible fade show" role="alert">
+          <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+          <span class="alert-text "><strong></strong> {{message}}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
 
         {% endfor %}
     {%endif%}

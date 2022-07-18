@@ -1,5 +1,6 @@
 # from crypt import methods
 from distutils.log import debug
+from email.policy import default
 import json
 from flask import Flask, redirect,render_template,url_for, request,flash
 from flask_mysqldb import MySQL
@@ -33,7 +34,7 @@ def registration():
     if form.validate_on_submit():
         flash(f"Account created successfully for {form.lname.data} {form.fname.data}", 'success ')
         return redirect(url_for('home'))
-    return render_template('register.html' , title='register', form = form)
+    return render_template('register.html' , title='register', form = form , defaultpass= '&aA123456')
 
 @app.route("/login", methods=['GET','POST'])
 def login():

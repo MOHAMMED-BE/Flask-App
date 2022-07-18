@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\STAGE-LP\Falsk-App\venv"
+VIRTUAL_ENV="D:\STAGE-LP\Flask-App\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
