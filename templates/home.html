@@ -2,9 +2,154 @@
 
 {% block content%}
 
+<!-- Navbar Light -->
+<div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+        <nav
+          class="navbar navbar-expand-lg blur border-radius-xl position-absolute my-3 top-0 border-bottom py-3 z-index-3 shadow my-3 py-2 start-0 end-0 mx-4">
+          <div class="container">
+            <a class="navbar-brand" href="https://demos.creative-tim.com/material-kit-pro/index" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+              Pythonic
+            </a>
+            
+            <a href="https://www.creative-tim.com/product/material-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-primary  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+            
+            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon mt-2">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </span>
+            </button>
+            <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+              <ul class="navbar-nav navbar-nav-hover mx-auto">
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                    Home
+                  </a>
+                </li>
+  
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                    Account
+                  </a>
+                </li>
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                    Blocks
+                  </a>
+                </li>
+  
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center">
+                    Docs
+                  </a>
+                </li>
+              </ul>
+  
+              <ul class="navbar-nav d-lg-block d-none">
+                <li class="nav-item">
+                  
+                  <a href="register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1" role="button">Sign Up</a>
+                  
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- End Navbar -->
+      </div>
+    </div>
+  </div>
+
+<!-- -------- START HEADER 3 w/ image on background ------- -->
+<header>
+    <div class="page-header min-vh-100" style="background-image: url(../static/assets/img/web.jpg);" loading="lazy">
+      <span class="mask bg-gradient-dark opacity-4"></span>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6 col-sm-9 text-center mx-auto">
+            <h1 class="text-white mb-4">Work with an amazing</h1>
+            <p class="lead text-white mb-sm-6 mb-4">We’re constantly trying to express ourselves and actualize our dreams. If you have the opportunity to play this game. If you have the opportunity to play this game.</p>
+            <p class="text-white h6 text-uppercase mb-4">connect with us on:</p>
+  
+            <div class="d-flex justify-content-center">
+              <a href="javascript:;"><i class="fab fa-facebook text-white me-5"></i></a>
+              <a href="javascript:;"><i class="fab fa-instagram text-white me-5"></i></a>
+              <a href="javascript:;"><i class="fab fa-twitter text-white me-5"></i></a>
+              <a href="javascript:;"><i class="fab fa-google-plus text-white"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- -------- END HEADER 3 w/ image on background ------- -->
 
 
-<section class="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
+<!-- Courses -->
+<section class="bg-ligh">
+    <div class="container p-5">
+        <h3 class="text-center text-secondary" id='learn'>Courses</h3>
+        <div class="row">
+            {% for course in courses %}
+            <div class="col-sm-12 col-md-6 col-lg-4 p-3 d-flex align-items-stretch">
+                <a href="#course_name" class="text-decoration-none">
+                    <div class="card bg-dark text-light">
+                        <div class="card-body text-center">
+                            <img src="{{url_for('static', filename=course.icon)}}" alt="" class="card-img w-25">
+                            <h4 class="card-title mb-4 text-light text-bold">
+                                {{course.name}}
+                            </h4>
+                            <p class="card-text">{{course.description}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Lessons -->
+<section class="bg-dark">
+    <div class="container p-5">
+        <div class="row mb-5 ">
+            <div class="col">
+                <h3 class="text-uppercase text-center text-light">latest lessons</h3>
+            </div>
+        </div>
+        <div class="row">
+            {% for lesson in lessons %}
+            <div class="col-sm-12 col-md-6 col-lg-4 pb-5 d-flex align-items-stretch">
+                <div class="card lesson">
+                    <img src="{{url_for('static', filename=lesson.thumbnail)}}" class="card-img">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a class="text-decoration-none text-dark" href="#">{{lesson.title}}</a>
+                        </h5>
+                        <p class="card-text mb-0">In:
+                            <a class="text-decoration-none" href="#">{{lesson.course}}</a>
+                        </p>
+                        <span><img class="article-img" src="{{url_for('static', filename='default.png')}}" alt="">By: <a
+                                href="#" class="link">{{lesson.author}}</a></span>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+
+{% endblock content%}
+
+
+<!-- 
+
+    <section class="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
     <div class="container">
         <div class="d-sm-flex align-items-center justify-content-between">
             <div>
@@ -23,7 +168,7 @@
         </div>
     </div>
 </section>
-<!-- Social Media -->
+Social Media
 <section class="bg-primary text-light p-5">
     <div class="container">
         <div class="d-md-flex justify-content-between align-items-center">
@@ -78,62 +223,6 @@
         </div>
 
     </div>
-    <!-- </div> -->
-</section>
-<!-- Courses -->
-<section class="bg-ligh">
-    <div class="container p-5">
-        <h3 class="text-center text-secondary" id='learn'>Courses</h3>
-        <div class="row">
-            {% for course in courses %}
-            <div class="col-sm-12 col-md-6 col-lg-4 p-3 d-flex align-items-stretch">
-                <a href="#course_name" class="text-decoration-none">
-                    <div class="card bg-dark text-light">
-                        <div class="card-body text-center">
-                            <img src="{{url_for('static', filename=course.icon)}}" alt="" class="card-img w-25">
-                            <h4 class="card-title mb-4">
-                                {{course.name}}
-                            </h4>
-                            <p class="card-text">{{course.description}}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
     </div>
 </section>
-<!-- Lessons -->
-<section class="bg-dark">
-    <div class="container p-5">
-        <div class="row mb-5 ">
-            <div class="col">
-                <h3 class="text-uppercase text-center text-light">latest lessons</h3>
-            </div>
-        </div>
-        <div class="row">
-            {% for lesson in lessons %}
-            <div class="col-sm-12 col-md-6 col-lg-4 pb-5 d-flex align-items-stretch">
-                <div class="card lesson">
-                    <img src="{{url_for('static', filename=lesson.thumbnail)}}" class="card-img">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">
-                            <a class="text-decoration-none text-dark" href="#">{{lesson.title}}</a>
-                        </h5>
-                        <p class="card-text mb-0">In:
-                            <a class="text-decoration-none" href="#">{{lesson.course}}</a>
-                        </p>
-                        <span><img class="article-img" src="{{url_for('static', filename='default.png')}}" alt="">By: <a
-                                href="#" class="link">{{lesson.author}}</a></span>
-
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
-    </div>
-</section>
-
-
-{% endblock content%}
+ -->
