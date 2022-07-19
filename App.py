@@ -5,10 +5,10 @@ import json
 from colorama import Cursor
 from flask import Flask, redirect,render_template,url_for, request,flash
 from flask_mysqldb import MySQL
+from classes.dotDict import dotdict
 from forms import RegistrationForm, LoginForm
 from flask_wtf import FlaskForm
 # import os
-
 
 
 
@@ -27,6 +27,11 @@ app.config['SECRET_KEY'] = '9adda8bf738de307aea09ba4faebcb19140a6223'
 
 data ={}
 
+def get_results(db_cursor):
+    desc = [d[0] for d in db_cursor.description]
+    results = [dotdict(dict(zip(desc, res))) for res in db_cursor.fetchall()]
+    return results
+
 @app.route("/")
 @app.route("/home")
 def home():
@@ -34,16 +39,18 @@ def home():
     with open("data/data.json","r") as file:
         data = json.load(file)
 
-    # cursor = mysql.connection.cursor()
-    # cursor.execute('select * from courses')
+    cursor = mysql.connection.cursor()
+    cursor.execute('select * from courses')
+    courses = get_results(cursor)
     # courses = cursor.fetchall()
-    # cursor.close()
+    cursor.close()
     cursor = mysql.connection.cursor()
     cursor.execute('select * from lessons')
+    # lessons = get_results(cursor)
     lessons = cursor.fetchall()
     cursor.close()
 
-    return render_template("home.html", lessons=lessons, courses=data['courses'])
+    return render_template("home.html", lessons=lessons, courses=courses)
 
 @app.route("/about")
 def about():
