@@ -90,7 +90,7 @@ def login():
 
         if form.validate_on_submit():
             if user:
-                flash(f"user connected",'success')
+                flash(f"user {user['username']} connected",'success')
             else:
                 flash(f"email or password not correct",'danger')
 
