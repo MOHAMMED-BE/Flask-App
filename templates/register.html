@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="card-body pb-3">
-      <form role="form text-start" method="POST">
+      <form role="form text-start" method="POST" action="{{url_for('insert')}}">
         {{form.hidden_tag()}}
         <div class="input-group input-group-outline mb-3">
             {{form.fname.label(class='form-label')}}
