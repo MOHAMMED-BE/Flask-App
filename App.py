@@ -2,6 +2,7 @@
 from distutils.log import debug
 from email.policy import default
 import json
+from colorama import Cursor
 from flask import Flask, redirect,render_template,url_for, request,flash
 from flask_mysqldb import MySQL
 from forms import RegistrationForm, LoginForm
@@ -9,7 +10,18 @@ from flask_wtf import FlaskForm
 # import os
 
 
+
+
 app = Flask(__name__)
+
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'nfakira'
+app.config['MYSQL_DB'] = 'FlaskAppDB'
+ 
+mysql = MySQL(app)
+
 
 app.config['SECRET_KEY'] = '9adda8bf738de307aea09ba4faebcb19140a6223'
 
@@ -22,7 +34,16 @@ def home():
     with open("data/data.json","r") as file:
         data = json.load(file)
 
-    return render_template("home.html", lessons=data['lessons'], courses=data['courses'])
+    # cursor = mysql.connection.cursor()
+    # cursor.execute('select * from courses')
+    # courses = cursor.fetchall()
+    # cursor.close()
+    cursor = mysql.connection.cursor()
+    cursor.execute('select * from lessons')
+    lessons = cursor.fetchall()
+    cursor.close()
+
+    return render_template("home.html", lessons=lessons, courses=data['courses'])
 
 @app.route("/about")
 def about():

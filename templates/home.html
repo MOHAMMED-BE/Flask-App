@@ -123,16 +123,16 @@
             {% for lesson in lessons %}
             <div class="col-sm-12 col-md-6 col-lg-4 pb-5 d-flex align-items-stretch">
                 <div class="card lesson">
-                    <img src="{{url_for('static', filename=lesson.thumbnail)}}" class="card-img">
+                    <img src="{{url_for('static', filename=lesson.4)}}" class="card-img">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">
-                            <a class="text-decoration-none text-dark" href="#">{{lesson.title}}</a>
+                            <a class="text-decoration-none text-dark" href="#">{{lesson.1}}</a>
                         </h5>
                         <p class="card-text mb-0">In:
-                            <a class="text-decoration-none" href="#">{{lesson.course}}</a>
+                            <a class="text-decoration-none" href="#">{{lesson.2}}</a>
                         </p>
                         <span><img class="article-img" src="{{url_for('static', filename='default.png')}}" alt="">By: <a
-                                href="#" class="link">{{lesson.author}}</a></span>
+                                href="#" class="link">{{lesson.3}}</a></span>
 
                     </div>
                 </div>
