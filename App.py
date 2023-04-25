@@ -4,7 +4,7 @@ from email.policy import default
 import json
 import MySQLdb
 from colorama import Cursor
-from flask import Flask, redirect,render_template,url_for, request,flash
+from flask import Flask, redirect, render_template, url_for, request, flash
 from flask_mysqldb import MySQL
 from classes.dotDict import dotdict
 from forms import LoginForm, RegistrationForm
@@ -12,21 +12,21 @@ from flask_wtf import FlaskForm
 # import os
 
 
-
 app = Flask(__name__)
 
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '' #nfakira
-app.config['MYSQL_DB'] = 'FlaskAppDB'
- 
+app.config['MYSQL_PASSWORD'] = ''  # nfakira
+app.config['MYSQL_DB'] = 'flaskdb'
+
 mysql = MySQL(app)
 
 
 app.config['SECRET_KEY'] = '9adda8bf738de307aea09ba4faebcb19140a6223'
 
-data ={}
+data = {}
+
 
 def get_results(db_cursor):
     desc = [d[0] for d in db_cursor.description]
@@ -37,11 +37,12 @@ def get_results(db_cursor):
 # -- home                                                    --
 # -----------------------------------------------------------------
 
+
 @app.route("/")
 @app.route("/home")
 def home():
     # filename = os.path.join(app.static_folder, 'data/data.json')
-    with open("data/data.json","r") as file:
+    with open("data/data.json", "r") as file:
         data = json.load(file)
 
     cursor = mysql.connection.cursor()
@@ -57,6 +58,7 @@ def home():
 
     return render_template("home.html", lessons=lessons, courses=courses)
 
+
 @app.route("/about")
 def about():
     return render_template("about.html", title="About")
@@ -65,24 +67,27 @@ def about():
 # -- register                                                    --
 # -----------------------------------------------------------------
 
-@app.route("/register" , methods=['GET','POST'])
+
+@app.route("/register", methods=['GET', 'POST'])
 def registration():
     form = RegistrationForm()
-    return render_template('register.html' , title='register', form = form )
+    return render_template('register.html', title='register', form=form)
 
 # -----------------------------------------------------------------
 # -- login                                                    --
 # -----------------------------------------------------------------
 
-@app.route("/login", methods=['GET','POST'])
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
-        email     = request.form['email']
-        password  = request.form['password']
-        
+        email = request.form['email']
+        password = request.form['password']
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM users WHERE email = %s AND password = %s', (email, password,))
+        cursor.execute(
+            'SELECT * FROM users WHERE email = %s AND password = %s', (email, password,))
         # user = get_results(cursor)
         user = cursor.fetchone()
 
@@ -90,34 +95,59 @@ def login():
 
         if form.validate_on_submit():
             if user:
-                flash(f"user {user['username']} connected",'success')
+                flash(f"user {user['username']} connected", 'success')
+                return redirect(url_for('home'))
             else:
-                flash(f"email or password not correct",'danger')
+                flash(f"email or password not correct", 'danger')
 
-    return render_template('login.html' , title='login', form = form)
+    return render_template('login.html', title='login', form=form)
+    
 
 
 # -----------------------------------------------------------------
-# -- insert                                                    --
+# -- register                                                    --
 # -----------------------------------------------------------------
 
-@app.route("/insert" , methods=['POST'])
+# @app.route("/register", methods=['POST'])
+# def register():
+#     form = RegistrationForm()
+#     if request.method == 'POST':
+#         fname = request.form['fname']
+#         lname = request.form['lname']
+#         username = request.form['username']
+#         email = request.form['email']
+#         password = request.form['password']
+
+#         cursor = mysql.connection.cursor()
+#         cursor.execute('INSERT INTO users VALUES(%s,%s,%s,%s,%s)',
+#                        (fname, lname, username, email, password))
+#         mysql.connection.commit()
+#         cursor.close()
+#     if form.validate_on_submit():
+#         flash(f"user created successfully", 'success')
+#         return redirect(url_for('registration'))
+
+@app.route('/insert', methods=['GET', 'POST'])
 def insert():
     form = RegistrationForm()
-    if request.method == 'POST':
-        fname     = request.form['fname']
-        lname     = request.form['lname']
-        username  = request.form['username']
-        email     = request.form['email']
-        password  = request.form['password']
-        
+    if form.validate_on_submit():
+        fname = form.fname.data
+        lname = form.lname.data
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO users VALUES(%s,%s,%s,%s,%s)',(fname,lname,username,email,password))
+        cursor.execute('INSERT INTO users (fname, lname, username, email, password) VALUES (%s, %s, %s, %s, %s)',
+                       (fname, lname, username, email, password))
         mysql.connection.commit()
         cursor.close()
-    if form.validate_on_submit():
-        flash(f"user created successfully",'success')
-        return redirect(url_for('registration'))
+
+        flash('User created successfully', 'success')
+        return redirect(url_for('home'))
+
+    return render_template('register.html', title='Register', form=form)
+
 
 
 # -----------------------------------------------------------------
@@ -130,7 +160,7 @@ def insert():
 #     if request.method == 'POST':
 #         email     = request.form['email']
 #         # password  = request.form['password']
-        
+
 #         cursor = mysql.connection.cursor()
 #         cursor.execute(f"select * from users where email='{email}'")
 #         # user = get_results(cursor)
@@ -147,74 +177,55 @@ def insert():
     # return render_template('login.html' , title='login', form = form)
 
 
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     app.run(debug=True)
 
- 
+
 # app.run(host='localhost', port=9000)
-
-
-
 
 
 """
 from distutils.log import debug
 from flask import Flask,render_template, request
 from flask_mysqldb import MySQL
- 
+
 app = Flask(__name__)
- 
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'flaskDB'
- 
+
 mysql = MySQL(app)
 
 # #Creating a connection cursor
 # with app.app_context():
 #     cursor = mysql.connection.cursor()
- 
 # #Executing SQL Statements
 # # cursor.execute('CREATE TABLE table_name(field1 int, field2 int)')
 #     cursor.execute('INSERT INTO Test VALUES(1,"ZZ","DD")')
 # # cursor.execute(' DELETE FROM table_name WHERE condition ')
- 
 # #Saving the Actions performed on the DB
 #     mysql.connection.commit()
- 
 # #Closing the cursor
 #     cursor.close()
 
 @app.route('/form')
 def form():
     return render_template('form.html')
- 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'GET':
         return "Login via the login Form"
-     
     if request.method == 'POST':
         id     = request.form['id']
         name   = request.form['name']
         prenom = request.form['prenom']
-        
         cursor = mysql.connection.cursor()
         cursor.execute('INSERT INTO Test VALUES(%s,%s,%s)',(id,name,prenom))
         mysql.connection.commit()
         cursor.close()
         return f"Done!!"
- 
 app.run(host='localhost', port=5000)
 """
 
@@ -290,6 +301,3 @@ app.run(host='localhost', port=5000)
 #         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque quidem nihil dolor officiis at magni!",
 #     },
 # ]
-
-
-
